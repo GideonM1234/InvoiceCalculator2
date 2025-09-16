@@ -80,11 +80,7 @@
 			<input type="number" id="total" placeholder="Enter total amount" />
 
 			<label for="serviceCharge">Service Charge %:</label>
-			<input
-				type="number"
-				id="serviceCharge"
-				placeholder="Enter service charge %"
-			/>
+			<input type="number" id="serviceCharge" value="5" />
 
 			<label for="vat">VAT % (on Service Charge):</label>
 			<input type="number" id="vat" value="7.5" />
@@ -112,25 +108,27 @@
 				const total =
 					parseFloat(document.getElementById("total").value) || 0;
 				const serviceChargePercent =
-					parseFloat(document.getElementById("serviceCharge").value) /
-						100 || 0;
+					(parseFloat(
+						document.getElementById("serviceCharge").value
+					) || 0) / 100;
 				const vatPercent =
-					parseFloat(document.getElementById("vat").value) / 100 || 0;
+					(parseFloat(document.getElementById("vat").value) || 0) /
+					100;
 				const whtPercent =
-					parseFloat(document.getElementById("wht").value) / 100 || 0;
+					(parseFloat(document.getElementById("wht").value) || 0) /
+					100;
 
-				// Denominator = 1 + service% + VAT%*service% - WHT%*service%
+				// Excel-style denominator formula
 				const denominator =
 					1 +
 					serviceChargePercent +
-					vatPercent * serviceChargePercent -
-					whtPercent * serviceChargePercent;
+					serviceChargePercent * vatPercent -
+					serviceChargePercent * whtPercent;
 
 				const rawMaterial = total / denominator;
 				const serviceCharge = rawMaterial * serviceChargePercent;
 				const vat = serviceCharge * vatPercent;
 				const wht = serviceCharge * whtPercent;
-
 				const finalTotal = rawMaterial + serviceCharge + vat - wht;
 
 				document.getElementById("result").style.display = "block";
