@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>VAT & WHT Calculator</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				background: #f5f7fa;
+				margin: 0;
+				padding: 20px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+			}
+			.calculator {
+				background: #fff;
+				padding: 25px;
+				border-radius: 12px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+				max-width: 420px;
+				width: 100%;
+			}
+			h2 {
+				text-align: center;
+				color: #333;
+				margin-bottom: 20px;
+			}
+			label {
+				display: block;
+				margin-top: 12px;
+				font-weight: bold;
+				color: #444;
+			}
+			input {
+				width: 100%;
+				padding: 10px;
+				margin-top: 6px;
+				border: 1px solid #ccc;
+				border-radius: 6px;
+				font-size: 14px;
+			}
+			button {
+				margin-top: 18px;
+				width: 100%;
+				padding: 12px;
+				background: #007bff;
+				color: #fff;
+				border: none;
+				border-radius: 6px;
+				font-size: 16px;
+				cursor: pointer;
+			}
+			button:hover {
+				background: #0056b3;
+			}
+			.result {
+				margin-top: 20px;
+				padding: 15px;
+				background: #f0f4ff;
+				border-radius: 8px;
+				border: 1px solid #d0d8ff;
+			}
+			.result p {
+				margin: 6px 0;
+				font-size: 15px;
+			}
+			.highlight {
+				font-weight: bold;
+				color: #222;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="calculator">
+			<h2>VAT & WHT Calculator</h2>
+			<label for="total">Total to be Paid by Client (₦):</label>
+			<input type="number" id="total" placeholder="Enter total amount" />
+
+			<label for="serviceCharge">Service Charge %:</label>
+			<input
+				type="number"
+				id="serviceCharge"
+				placeholder="Enter service charge %"
+			/>
+
+			<label for="vat">VAT % (on Service Charge):</label>
+			<input type="number" id="vat" value="7.5" />
+
+			<label for="wht">WHT % (on Service Charge):</label>
+			<input type="number" id="wht" value="5" />
+
+			<button onclick="calculate()">Calculate</button>
+
+			<div id="result" class="result" style="display: none"></div>
+		</div>
+
+		<script>
+			function formatCurrency(value) {
+				return (
+					"₦" +
+					value.toLocaleString("en-NG", {
+						minimumFractionDigits: 2,
+						maximumFractionDigits: 2,
+					})
+				);
+			}
+
+			function calculate() {
+				const total =
+					parseFloat(document.getElementById("total").value) || 0;
+				const serviceChargePercent =
+					parseFloat(document.getElementById("serviceCharge").value) /
+						100 || 0;
+				const vatPercent =
+					parseFloat(document.getElementById("vat").value) / 100 || 0;
+				const whtPercent =
+					parseFloat(document.getElementById("wht").value) / 100 || 0;
+
+				// Denominator = 1 + service% + VAT%*service% - WHT%*service%
+				const denominator =
+					1 +
+					serviceChargePercent +
+					vatPercent * serviceChargePercent -
+					whtPercent * serviceChargePercent;
+
+				const rawMaterial = total / denominator;
+				const serviceCharge = rawMaterial * serviceChargePercent;
+				const vat = serviceCharge * vatPercent;
+				const wht = serviceCharge * whtPercent;
+
+				const finalTotal = rawMaterial + serviceCharge + vat - wht;
+
+				document.getElementById("result").style.display = "block";
+				document.getElementById("result").innerHTML = `
+        <p><span class="highlight">Raw Material:</span> ${formatCurrency(
+			rawMaterial
+		)}</p>
+        <p><span class="highlight">Service Charge:</span> ${formatCurrency(
+			serviceCharge
+		)}</p>
+        <p><span class="highlight">VAT (${(vatPercent * 100).toFixed(
+			2
+		)}% of Service Charge):</span> ${formatCurrency(vat)}</p>
+        <p><span class="highlight">WHT (${(whtPercent * 100).toFixed(
+			2
+		)}% of Service Charge):</span> ${formatCurrency(wht)}</p>
+        <hr>
+        <p><span class="highlight">Total:</span> ${formatCurrency(
+			finalTotal
+		)}</p>
+      `;
+			}
+		</script>
+	</body>
+</html>
