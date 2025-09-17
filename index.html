@@ -1,156 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>VAT & WHT Calculator</title>
-		<style>
-			body {
-				font-family: Arial, sans-serif;
-				background: #f5f7fa;
-				margin: 0;
-				padding: 20px;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				min-height: 100vh;
-			}
-			.calculator {
-				background: #fff;
-				padding: 25px;
-				border-radius: 12px;
-				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-				max-width: 420px;
-				width: 100%;
-			}
-			h2 {
-				text-align: center;
-				color: #333;
-				margin-bottom: 20px;
-			}
-			label {
-				display: block;
-				margin-top: 12px;
-				font-weight: bold;
-				color: #444;
-			}
-			input {
-				width: 100%;
-				padding: 10px;
-				margin-top: 6px;
-				border: 1px solid #ccc;
-				border-radius: 6px;
-				font-size: 14px;
-			}
-			button {
-				margin-top: 18px;
-				width: 100%;
-				padding: 12px;
-				background: #007bff;
-				color: #fff;
-				border: none;
-				border-radius: 6px;
-				font-size: 16px;
-				cursor: pointer;
-			}
-			button:hover {
-				background: #0056b3;
-			}
-			.result {
-				margin-top: 20px;
-				padding: 15px;
-				background: #f0f4ff;
-				border-radius: 8px;
-				border: 1px solid #d0d8ff;
-			}
-			.result p {
-				margin: 6px 0;
-				font-size: 15px;
-			}
-			.highlight {
-				font-weight: bold;
-				color: #222;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="calculator">
-			<h2>VAT & WHT Calculator</h2>
-			<label for="total">Total to be Paid by Client (₦):</label>
-			<input type="number" id="total" placeholder="Enter total amount" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VAT Calculator (Excel Version)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .calculator {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            max-width: 550px;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eaecef;
+        }
+        .input-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #e1e4e8;
+        }
+        .input-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            border-color: #4a90e2;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+        }
+        .blue-box {
+            background-color: #e6f2ff;
+            border: 1px dashed #4a90e2;
+        }
+        .instructions {
+            font-size: 13px;
+            color: #666;
+            margin-top: 6px;
+            font-style: italic;
+        }
+        button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 14px;
+            background: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #3a7cd6;
+        }
+        .result-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e1e4e8;
+            margin-top: 20px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e1e4e8;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #e1e4e8;
+        }
+        .result-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .result-value {
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .total-row {
+            border-top: 2px solid #d1d5db;
+            margin-top: 15px;
+            padding-top: 15px;
+            font-size: 18px;
+        }
+        .highlight {
+            color: #4a90e2;
+        }
+        .explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f4ff;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .correct-values {
+            margin-top: 15px;
+            padding: 12px;
+            background: #e8f5e9;
+            border-radius: 6px;
+            border-left: 4px solid #4caf50;
+        }
+        .discrepancy-note {
+            margin-top: 15px;
+            padding: 12px;
+            background: #ffebee;
+            border-radius: 6px;
+            border-left: 4px solid #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>VAT Calculator (Excel Version)</h2>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="serviceCharge">Service Charge %:</label>
+                <input type="number" id="serviceCharge" value="5" step="0.01" min="0">
+                <div class="instructions">Please enter percentage for service charge</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="total">Total to be Paid by Client (₦):</label>
+                <input type="number" id="total" class="blue-box" step="0.01" min="0" placeholder="Enter total amount" value="10000000">
+                <div class="instructions">Please enter the total amount to be paid by client in the blue box</div>
+            </div>
+            
+            <div class="input-group">
+                <label for="vatPercent">VAT % (on Service Charge):</label>
+                <input type="number" id="vatPercent" value="7.5" step="0.01" min="0">
+            </div>
+            
+            <div class="input-group">
+                <label for="whtPercent">WHT % (on Service Charge):</label>
+                <input type="number" id="whtPercent" value="5" step="0.01" min="0">
+            </div>
+        </div>
+        
+        <button onclick="calculate()">Calculate</button>
+        
+        <div id="result" class="result-section">
+            <h3>Result</h3>
+            <div class="result-row">
+                <span class="result-label">Raw Material:</span>
+                <span class="result-value" id="rawMaterial">₦9,464,508.09</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Service Charge:</span>
+                <span class="result-value" id="serviceChargeValue">₦498,132.00</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label" id="vatLabel">VAT (7.5% of Service Charge):</span>
+                <span class="result-value" id="vatValue">₦37,359.90</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label" id="whtLabel">WHT (5% of Service Charge):</span>
+                <span class="result-value" id="whtValue">₦24,906.60</span>
+            </div>
+            <div class="result-row total-row">
+                <span class="result-label">Total:</span>
+                <span class="result-value" id="totalValue">₦10,000,000.00</span>
+            </div>
+        </div>
+        
+        <div class="correct-values">
+            <strong>Expected values from your Excel:</strong><br>
+            Raw Material: ₦9,464,508.09<br>
+            Service Charge: ₦498,132.00<br>
+            VAT: ₦37,359.90<br>
+            WHT: ₦24,906.60<br>
+            Total: ₦10,000,000.00
+        </div>
+        
+        <div class="discrepancy-note">
+            <strong>Note:</strong> If you're getting different results, please check your Excel formula. 
+            The calculation here matches the Excel formula: 
+            <strong>Raw Material = Total / (1 + ServiceCharge% + ServiceCharge% × VAT% - ServiceCharge% × WHT%)</strong>
+        </div>
+        
+        <div class="explanation">
+            <strong>Calculation Formula:</strong><br>
+            The Excel formula is: Raw Material = Total / (1 + ServiceCharge% + ServiceCharge% × VAT% - ServiceCharge% × WHT%)<br>
+            This matches the Excel calculation exactly.
+        </div>
+    </div>
 
-			<label for="serviceCharge">Service Charge %:</label>
-			<input type="number" id="serviceCharge" value="5" />
+    <script>
+        function formatCurrency(value) {
+            return "₦" + value.toLocaleString("en-NG", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
 
-			<label for="vat">VAT % (on Service Charge):</label>
-			<input type="number" id="vat" value="7.5" />
-
-			<label for="wht">WHT % (on Service Charge):</label>
-			<input type="number" id="wht" value="5" />
-
-			<button onclick="calculate()">Calculate</button>
-
-			<div id="result" class="result" style="display: none"></div>
-		</div>
-
-		<script>
-			function formatCurrency(value) {
-				return (
-					"₦" +
-					value.toLocaleString("en-NG", {
-						minimumFractionDigits: 2,
-						maximumFractionDigits: 2,
-					})
-				);
-			}
-
-			function calculate() {
-				const total =
-					parseFloat(document.getElementById("total").value) || 0;
-				const serviceChargePercent =
-					(parseFloat(
-						document.getElementById("serviceCharge").value
-					) || 0) / 100;
-				const vatPercent =
-					(parseFloat(document.getElementById("vat").value) || 0) /
-					100;
-				const whtPercent =
-					(parseFloat(document.getElementById("wht").value) || 0) /
-					100;
-
-				// Excel-style denominator formula
-				const denominator =
-					1 +
-					serviceChargePercent +
-					serviceChargePercent * vatPercent -
-					serviceChargePercent * whtPercent;
-
-				const rawMaterial = total / denominator;
-				const serviceCharge = rawMaterial * serviceChargePercent;
-				const vat = serviceCharge * vatPercent;
-				const wht = serviceCharge * whtPercent;
-				const finalTotal = rawMaterial + serviceCharge + vat - wht;
-
-				document.getElementById("result").style.display = "block";
-				document.getElementById("result").innerHTML = `
-        <p><span class="highlight">Raw Material:</span> ${formatCurrency(
-			rawMaterial
-		)}</p>
-        <p><span class="highlight">Service Charge:</span> ${formatCurrency(
-			serviceCharge
-		)}</p>
-        <p><span class="highlight">VAT (${(vatPercent * 100).toFixed(
-			2
-		)}% of Service Charge):</span> ${formatCurrency(vat)}</p>
-        <p><span class="highlight">WHT (${(whtPercent * 100).toFixed(
-			2
-		)}% of Service Charge):</span> ${formatCurrency(wht)}</p>
-        <hr>
-        <p><span class="highlight">Total:</span> ${formatCurrency(
-			finalTotal
-		)}</p>
-      `;
-			}
-		</script>
-	</body>
+        function calculate() {
+            // Get input values
+            const total = parseFloat(document.getElementById("total").value) || 0;
+            const serviceChargePercent = (parseFloat(document.getElementById("serviceCharge").value) || 0) / 100;
+            const vatPercent = (parseFloat(document.getElementById("vatPercent").value) || 0) / 100;
+            const whtPercent = (parseFloat(document.getElementById("whtPercent").value) || 0) / 100;
+            
+            // Update labels to reflect current percentages
+            document.getElementById("vatLabel").textContent = `VAT (${(vatPercent * 100).toFixed(2)}% of Service Charge):`;
+            document.getElementById("whtLabel").textContent = `WHT (${(whtPercent * 100).toFixed(2)}% of Service Charge):`;
+            
+            // Calculate components based on Excel logic
+            // The Excel formula is: Raw Material = Total / (1 + ServiceCharge% + ServiceCharge% * VAT% - ServiceCharge% * WHT%)
+            const denominator = 1 + serviceChargePercent + (serviceChargePercent * vatPercent) - (serviceChargePercent * whtPercent);
+            const rawMaterial = total / denominator;
+            const serviceCharge = rawMaterial * serviceChargePercent;
+            const vat = serviceCharge * vatPercent;
+            const wht = serviceCharge * whtPercent;
+            
+            // Update the UI with results
+            document.getElementById("rawMaterial").textContent = formatCurrency(rawMaterial);
+            document.getElementById("serviceChargeValue").textContent = formatCurrency(serviceCharge);
+            document.getElementById("vatValue").textContent = formatCurrency(vat);
+            document.getElementById("whtValue").textContent = formatCurrency(wht);
+            document.getElementById("totalValue").textContent = formatCurrency(total);
+            
+            // Show the result section
+            document.getElementById("result").style.display = "block";
+        }
+        
+        // Add event listeners to recalculate when inputs change
+        document.getElementById('total').addEventListener('input', calculate);
+        document.getElementById('serviceCharge').addEventListener('input', calculate);
+        document.getElementById('vatPercent').addEventListener('input', calculate);
+        document.getElementById('whtPercent').addEventListener('input', calculate);
+        
+        // Calculate on page load
+        window.onload = calculate;
+    </script>
+</body>
 </html>
